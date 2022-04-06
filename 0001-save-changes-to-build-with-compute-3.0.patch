@@ -1,0 +1,56 @@
+From a80a3095b942e5af39a0d9f1045b8870133fb558 Mon Sep 17 00:00:00 2001
+From: ab <ab@defiance>
+Date: Tue, 5 Apr 2022 17:20:42 +0100
+Subject: [PATCH] save changes to build with compute 3.0
+
+---
+ configure.py                                     | 2 +-
+ tensorflow/compiler/xla/service/platform_util.cc | 4 ++--
+ third_party/gpus/cuda_configure.bzl              | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configure.py b/configure.py
+index da6af8f8cc9..044b97ea1e5 100644
+--- a/configure.py
++++ b/configure.py
+@@ -36,7 +36,7 @@ except ImportError:
+ _DEFAULT_CUDA_VERSION = '10'
+ _DEFAULT_CUDNN_VERSION = '7'
+ _DEFAULT_TENSORRT_VERSION = '6'
+-_DEFAULT_CUDA_COMPUTE_CAPABILITIES = '3.5,7.0'
++_DEFAULT_CUDA_COMPUTE_CAPABILITIES = '3.0,7.0'
+ 
+ _TF_OPENCL_VERSION = '1.2'
+ _DEFAULT_COMPUTECPP_TOOLKIT_PATH = '/usr/local/computecpp'
+diff --git a/tensorflow/compiler/xla/service/platform_util.cc b/tensorflow/compiler/xla/service/platform_util.cc
+index 85cced13fad..0d8ee99cef8 100644
+--- a/tensorflow/compiler/xla/service/platform_util.cc
++++ b/tensorflow/compiler/xla/service/platform_util.cc
+@@ -33,9 +33,9 @@ limitations under the License.
+ 
+ namespace xla {
+ 
+-// Minimum supported CUDA compute capability is 3.5.
++// Minimum supported CUDA compute capability is 3.0.
+ constexpr int kMinCudaComputeCapabilityMajor = 3;
+-constexpr int kMinCudaComputeCapabilityMinor = 5;
++constexpr int kMinCudaComputeCapabilityMinor = 0;
+ 
+ // Minimum supported AMDGPU ISA version is 803.
+ constexpr int kMinAMDGPUISAVersion = 803;
+diff --git a/third_party/gpus/cuda_configure.bzl b/third_party/gpus/cuda_configure.bzl
+index a192c022a47..6123465d7c4 100644
+--- a/third_party/gpus/cuda_configure.bzl
++++ b/third_party/gpus/cuda_configure.bzl
+@@ -418,7 +418,7 @@ def compute_capabilities(repository_ctx):
+     capabilities = get_host_environ(
+         repository_ctx,
+         _TF_CUDA_COMPUTE_CAPABILITIES,
+-        "compute_35,compute_52",
++        "compute_30,compute_52",
+     ).split(",")
+ 
+     # Map old 'x.y' capabilities to 'compute_xy'.
+-- 
+2.25.1
+

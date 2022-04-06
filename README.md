@@ -18,8 +18,9 @@ Process for building:
 ```sh
 git clone --depth 1 --branch r2.3 https://github.com/tensorflow/tensorflow
 cd tensorflow
-git apply-patch 0001-save-changes-to-build-with-compute-3.0.patch
+git apply ../0001-save-changes-to-build-with-compute-3.0.patch
 TMP="/tmp"
+./configure
 time bazelisk-linux-amd64 build --local_ram_resources=14336 --config=opt --config=cuda --copt=-D"TF_EXTRA_CUDA_CAPABILITIES=3.0" //tensorflow/tools/pip_package:build_pip_package; alert; date
 # Wait for 8 hours
 bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg
